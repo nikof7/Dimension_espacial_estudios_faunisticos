@@ -210,3 +210,65 @@ Representación del modelo multivariante, realizado anteriormente.
 <img src="archivos_qgis/02-08-1.png" width="70%"/>
 
 <img src="archivos_qgis/prettyBreaks.png" width="70%"/>
+
+
+
+### multGLM
+
+```{r}
+names(datos)
+```
+
+```{r}
+multGLM.MAC_CAL0 <- multGLM(data = datos, which(colnames(datos)=="MAC_CAL"), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE)
+save(multGLM.MAC_CAL0, file="multGLM.MAC_CAL0.rda")
+```
+
+Considerando FDR:
+```{r}
+multGLM.MAC_CAL1 <- multGLM(data = datos, which(colnames(datos)=="MAC_CAL"), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE)
+save(multGLM.MAC_CAL1, file="multGLM.MAC_CAL1.rda")
+```
+
+Considerando corSelect:
+```{r}
+multGLM.MAC_CAL2 <- multGLM(data = datos, which(colnames(datos)=="MAC_CAL"), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE, corSelect=TRUE)
+save(multGLM.MAC_CAL2, file="multGLM.MAC_CAL2.rda")
+```
+Utilizando trim:
+
+```{r}
+multGLM.MAC_CAL3 <- multGLM(data = datos, which(colnames(datos)=="MAC_CAL"), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE, corSelect=TRUE, trim = TRUE)
+save(multGLM.MAC_CAL3, file="multGLM.MAC_CAL3.rda")
+```
+
+Summary de todos los modelos:
+
+```{r}
+summary(multGLM.MAC_CAL0$models$MAC_CAL)
+summary(multGLM.MAC_CAL1$models$MAC_CAL)
+summary(multGLM.MAC_CAL2$models$MAC_CAL)
+summary(multGLM.MAC_CAL3$models$MAC_CAL)
+```
+
+```{r}
+
+predic0 <- multGLM.MAC_CAL0$predictions
+colnames(predic0) <- c("fid", "MAC_CAL_F_0", "MAC_CAL_F_0")
+predic1 <- multGLM.MAC_CAL1$predictions
+colnames(predic1) <- c("fid", "MAC_CAL_F_1", "MAC_CAL_F_1")
+predic2 <- multGLM.MAC_CAL2$predictions
+colnames(predic2) <- c("fid", "MAC_CAL_F_2", "MAC_CAL_F_2")
+predic3 <- multGLM.MAC_CAL3$predictions
+colnames(predic3) <- c("fid", "MAC_CAL_F_3", "MAC_CAL_F_3")
+
+predics <- data.frame(predic0, predic1, predic2, predic3)
+
+```
+
+```{r}
+write.dbf(predic0, file="fav_MAC_MAL_0.dbf")
+write.dbf(predics, file="fav_MAC_MAL_all.dbf")
+```
+
+
