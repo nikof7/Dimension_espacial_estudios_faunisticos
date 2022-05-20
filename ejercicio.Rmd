@@ -252,18 +252,24 @@ summary(multGLM.MAC_CAL3$models$MAC_CAL)
 ```
 
 ```{r}
+predic0 <- multGLM.MAC_CAL0$predictions %>% 
+  rename(P_0= MAC_CAL_P, F_0 =MAC_CAL_F)
 
-predic0 <- multGLM.MAC_CAL0$predictions
-colnames(predic0) <- c("fid", "MAC_CAL_F_0", "MAC_CAL_F_0")
-predic1 <- multGLM.MAC_CAL1$predictions
-colnames(predic1) <- c("fid", "MAC_CAL_F_1", "MAC_CAL_F_1")
-predic2 <- multGLM.MAC_CAL2$predictions
-colnames(predic2) <- c("fid", "MAC_CAL_F_2", "MAC_CAL_F_2")
-predic3 <- multGLM.MAC_CAL3$predictions
-colnames(predic3) <- c("fid", "MAC_CAL_F_3", "MAC_CAL_F_3")
+
+predic1 <- multGLM.MAC_CAL1$predictions %>%
+  select("MAC_CAL_P", "MAC_CAL_F") %>%
+  rename(P_1= MAC_CAL_P, F_1 =MAC_CAL_F)
+
+
+predic2 <- multGLM.MAC_CAL2$predictions %>%
+  select("MAC_CAL_P", "MAC_CAL_F") %>%
+  rename(P_2= MAC_CAL_P, F_2 =MAC_CAL_F)
+
+predic3 <- multGLM.MAC_CAL3$predictions %>%
+  select("MAC_CAL_P", "MAC_CAL_F") %>%
+  rename(P_3= MAC_CAL_P, F_3 =MAC_CAL_F)
 
 predics <- data.frame(predic0, predic1, predic2, predic3)
-
 ```
 
 ```{r}
