@@ -3221,7 +3221,7 @@ head(fav.matematico.MAC_CAL)</code></pre>
 ## 12 variable(s) INCLUDED IN THE FINAL MODEL
 ##  LA3, PMR, TJUL, PEND, DIPR, ALTI2, ORS, PM24, DIHE, ALTI, HUEN, HUJU</code></pre>
 <pre><code>## Finished!</code></pre>
-<pre><code>## It took 43.7 secs.</code></pre>
+<pre><code>## It took 32.5 secs.</code></pre>
 <pre class="r"><code>save(multGLM.MAC_CAL0, file=&quot;multGLM.MAC_CAL0.rda&quot;)</code></pre>
 <p>Considerando FDR:</p>
 <pre class="r"><code>multGLM.MAC_CAL1 &lt;- multGLM(data = datos, which(colnames(datos)==&quot;MAC_CAL&quot;), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE)</code></pre>
@@ -3989,7 +3989,7 @@ head(fav.matematico.MAC_CAL)</code></pre>
 ## 13 variable(s) INCLUDED IN THE FINAL MODEL
 ##  LA, PREC, LA3, DIPR, TJUL, PEND, ALTI2, ETP, DAUT, DIHE, PM24, ALTI, PERM</code></pre>
 <pre><code>## Finished!</code></pre>
-<pre><code>## It took 27.3 secs.</code></pre>
+<pre><code>## It took 20.2 secs.</code></pre>
 <pre class="r"><code>save(multGLM.MAC_CAL1, file=&quot;multGLM.MAC_CAL1.rda&quot;)</code></pre>
 <p>Considerando corSelect:</p>
 <pre class="r"><code>multGLM.MAC_CAL2 &lt;- multGLM(data = datos, which(colnames(datos)==&quot;MAC_CAL&quot;), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE, corSelect=TRUE)</code></pre>
@@ -4016,7 +4016,7 @@ head(fav.matematico.MAC_CAL)</code></pre>
 ## 6 variable(s) INCLUDED IN THE FINAL MODEL
 ##  LA, ETR, PEND, TJUL, TENE, DIPR</code></pre>
 <pre><code>## Finished!</code></pre>
-<pre><code>## It took 5.6 secs.</code></pre>
+<pre><code>## It took 4.2 secs.</code></pre>
 <pre class="r"><code>save(multGLM.MAC_CAL2, file=&quot;multGLM.MAC_CAL2.rda&quot;)</code></pre>
 <p>Utilizando trim:</p>
 <pre class="r"><code>multGLM.MAC_CAL3 &lt;- multGLM(data = datos, which(colnames(datos)==&quot;MAC_CAL&quot;), var.cols = 21:54, id.col=1, step=TRUE, Fav = TRUE, FDR=TRUE, corSelect=TRUE, trim = TRUE)</code></pre>
@@ -4043,7 +4043,7 @@ head(fav.matematico.MAC_CAL)</code></pre>
 ## 6 variable(s) INCLUDED IN THE FINAL MODEL
 ##  LA, ETR, PEND, TJUL, TENE, DIPR</code></pre>
 <pre><code>## Finished!</code></pre>
-<pre><code>## It took 5.3 secs.</code></pre>
+<pre><code>## It took 4.2 secs.</code></pre>
 <pre class="r"><code>save(multGLM.MAC_CAL3, file=&quot;multGLM.MAC_CAL3.rda&quot;)</code></pre>
 <p>Summary de todos los modelos:</p>
 <pre class="r"><code>summary(multGLM.MAC_CAL0$models$MAC_CAL)</code></pre>
@@ -4177,6 +4177,26 @@ head(fav.matematico.MAC_CAL)</code></pre>
 ## AIC: 520.5
 ## 
 ## Number of Fisher Scoring iterations: 11</code></pre>
+<pre class="r"><code>predic0 &lt;- multGLM.MAC_CAL0$predictions %&gt;% 
+  rename(P_0= MAC_CAL_P, F_0 =MAC_CAL_F)
+
+
+predic1 &lt;- multGLM.MAC_CAL1$predictions %&gt;%
+  select(&quot;MAC_CAL_P&quot;, &quot;MAC_CAL_F&quot;) %&gt;%
+  rename(P_1= MAC_CAL_P, F_1 =MAC_CAL_F)
+
+
+predic2 &lt;- multGLM.MAC_CAL2$predictions %&gt;%
+  select(&quot;MAC_CAL_P&quot;, &quot;MAC_CAL_F&quot;) %&gt;%
+  rename(P_2= MAC_CAL_P, F_2 =MAC_CAL_F)
+
+predic3 &lt;- multGLM.MAC_CAL3$predictions %&gt;%
+  select(&quot;MAC_CAL_P&quot;, &quot;MAC_CAL_F&quot;) %&gt;%
+  rename(P_3= MAC_CAL_P, F_3 =MAC_CAL_F)
+
+predics &lt;- data.frame(predic0, predic1, predic2, predic3)</code></pre>
+<pre class="r"><code>write.dbf(predic0, file=&quot;fav_MAC_MAL_0.dbf&quot;)
+write.dbf(predics, file=&quot;fav_MAC_MAL_all.dbf&quot;)</code></pre>
 </div>
 </div>
 </div>

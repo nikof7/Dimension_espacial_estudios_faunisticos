@@ -251,7 +251,7 @@ summary(multGLM.MAC_CAL2$models$MAC_CAL)
 summary(multGLM.MAC_CAL3$models$MAC_CAL)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 predic0 <- multGLM.MAC_CAL0$predictions %>% 
   rename(P_0= MAC_CAL_P, F_0 =MAC_CAL_F)
 
@@ -277,4 +277,38 @@ write.dbf(predic0, file="fav_MAC_MAL_0.dbf")
 write.dbf(predics, file="fav_MAC_MAL_all.dbf")
 ```
 
+## Evaluando modelo univariante o multivariante
+
+```{r}
+auc_modelo <- AUC(model=PREC.MAC_CAL)
+```
+
+```{r message=FALSE, warning=FALSE}
+eval_mod <- threshMeasures(obs=PREC.MAC_CAL$y,
+                           pred=PREC.MAC_CAL$fitted.values,
+                           thresh = 0.5)
+```
+
+```{r}
+head(eval_mod)
+```
+
+Gurdamos el modelo
+```{r}
+save(eval_mod, file="eval_modMAC_CAL")
+```
+
+### Lo mismo pero con el multivariante
+Error acá:
+```{r}
+eval1 <- multModEv(models=multGLM.MAC_CAL3$models$MAC_CAL,
+                   thresh = 0.5,
+                   bind.method = "n.bins",
+                   fixed.bin.size = TRUE)
+```
+
+```{r}
+eval2 <- multModEv(models=multGLM.MAC_CAL3$models[1], thresh = "preval", measures = c("AUC", "CCR", "Sensitivity", "Specificity"))
+head(eval2)
+```
 
